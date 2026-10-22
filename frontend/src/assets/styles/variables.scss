@@ -1,0 +1,61 @@
+// base color
+$blue:#1930d2;
+$light-blue:#1655d2;
+$red:#C03639;
+$pink: #E65D6E;
+$green: #30B08F;
+$tiffany: #4AB7BD;
+$yellow:#FEC171;
+$panGreen: #30B08F;
+
+// 默认菜单主题风格
+$base-menu-color:#bfcbd9;
+$base-menu-color-active:#f4f4f5;
+$base-menu-background:#001529;
+$base-logo-title-color: #ffffff;
+
+$base-menu-light-color:rgba(0,0,0,.70);
+$base-menu-light-background:#ffffff;
+$base-logo-light-title-color: #001529;
+
+$base-sub-menu-background:#1f2d3d;
+$base-sub-menu-hover:#1880ff;
+
+// 企业专业风配色常量
+$enterprise-primary: #1890ff;
+$enterprise-navy: #001529;
+$enterprise-bg: #f0f2f5;
+$enterprise-text-primary: #303133;
+$enterprise-text-regular: #606266;
+$enterprise-text-secondary: #909399;
+$enterprise-border: #e4e7ed;
+$enterprise-navbar-bg: #ffffff;
+
+// 高度常量
+$navbar-height: 52px;
+$tagsview-height: 36px;
+$sidebar-logo-height: 52px;
+
+$base-sidebar-width: 200px;
+
+// the :export directive is the magic sauce for webpack
+// https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
+:export {
+  menuColor: $base-menu-color;
+  menuLightColor: $base-menu-light-color;
+  menuColorActive: $base-menu-color-active;
+  menuBackground: $base-menu-background;
+  menuLightBackground: $base-menu-light-background;
+  subMenuBackground: $base-sub-menu-background;
+  subMenuHover: $base-sub-menu-hover;
+  sideBarWidth: $base-sidebar-width;
+  logoTitleColor: $base-logo-title-color;
+  logoLightTitleColor: $base-logo-light-title-color;
+  enterprisePrimary: $enterprise-primary;
+  enterpriseBg: $enterprise-bg;
+  enterpriseBorder: $enterprise-border;
+  enterpriseNavBg: $enterprise-navbar-bg;
+  navbarHeight: $navbar-height;
+  tagsViewHeight: $tagsview-height;
+  sidebarLogoHeight: $sidebar-logo-height;
+}

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.biz.mapper.BizTrainLecturerMapper">
+    
+    <resultMap type="BizTrainLecturer" id="BizTrainLecturerResult">
+        <result property="lecturerId"    column="lecturer_id"    />
+        <result property="lecturerName"    column="lecturer_name"    />
+        <result property="lecturerType"    column="lecturer_type"    />
+        <result property="userId"    column="user_id"    />
+        <result property="companyName"    column="company_name"    />
+        <result property="expertiseArea"    column="expertise_area"    />
+        <result property="qualificationUrl"    column="qualification_url"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectBizTrainLecturerVo">
+        select lecturer_id, lecturer_name, lecturer_type, user_id, company_name, expertise_area, qualification_url, status, del_flag, create_by, create_time, update_by, update_time, remark from biz_train_lecturer
+    </sql>
+
+    <select id="selectBizTrainLecturerList" parameterType="BizTrainLecturer" resultMap="BizTrainLecturerResult">
+        <include refid="selectBizTrainLecturerVo"/>
+        <where>  
+            <if test="lecturerName != null  and lecturerName != ''"> and lecturer_name like concat('%', #{lecturerName}, '%')</if>
+            <if test="lecturerType != null  and lecturerType != ''"> and lecturer_type = #{lecturerType}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="companyName != null  and companyName != ''"> and company_name like concat('%', #{companyName}, '%')</if>
+            <if test="expertiseArea != null  and expertiseArea != ''"> and expertise_area like concat('%', #{expertiseArea}, '%')</if>
+            <if test="qualificationUrl != null  and qualificationUrl != ''"> and qualification_url = #{qualificationUrl}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectBizTrainLecturerByLecturerId" parameterType="Long" resultMap="BizTrainLecturerResult">
+        <include refid="selectBizTrainLecturerVo"/>
+        where lecturer_id = #{lecturerId}
+    </select>
+
+    <insert id="insertBizTrainLecturer" parameterType="BizTrainLecturer" useGeneratedKeys="true" keyProperty="lecturerId">
+        insert into biz_train_lecturer
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="lecturerName != null and lecturerName != ''">lecturer_name,</if>
+            <if test="lecturerType != null">lecturer_type,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="companyName != null">company_name,</if>
+            <if test="expertiseArea != null">expertise_area,</if>
+            <if test="qualificationUrl != null">qualification_url,</if>
+            <if test="status != null">status,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="lecturerName != null and lecturerName != ''">#{lecturerName},</if>
+            <if test="lecturerType != null">#{lecturerType},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="companyName != null">#{companyName},</if>
+            <if test="expertiseArea != null">#{expertiseArea},</if>
+            <if test="qualificationUrl != null">#{qualificationUrl},</if>
+            <if test="status != null">#{status},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBizTrainLecturer" parameterType="BizTrainLecturer">
+        update biz_train_lecturer
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="lecturerName != null and lecturerName != ''">lecturer_name = #{lecturerName},</if>
+            <if test="lecturerType != null">lecturer_type = #{lecturerType},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="companyName != null">company_name = #{companyName},</if>
+            <if test="expertiseArea != null">expertise_area = #{expertiseArea},</if>
+            <if test="qualificationUrl != null">qualification_url = #{qualificationUrl},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where lecturer_id = #{lecturerId}
+    </update>
+
+    <delete id="deleteBizTrainLecturerByLecturerId" parameterType="Long">
+        delete from biz_train_lecturer where lecturer_id = #{lecturerId}
+    </delete>
+
+    <delete id="deleteBizTrainLecturerByLecturerIds" parameterType="String">
+        delete from biz_train_lecturer where lecturer_id in 
+        <foreach item="lecturerId" collection="array" open="(" separator="," close=")">
+            #{lecturerId}
+        </foreach>
+    </delete>
+</mapper>

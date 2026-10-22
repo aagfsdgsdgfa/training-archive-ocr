@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.biz.mapper.BizTrainOcrLogMapper">
+    
+    <resultMap type="BizTrainOcrLog" id="BizTrainOcrLogResult">
+        <result property="logId"    column="log_id"    />
+        <result property="batchId"    column="batch_id"    />
+        <result property="fileMd5"    column="file_md5"    />
+        <result property="fileUrl"    column="file_url"    />
+        <result property="ocrSubject"    column="ocr_subject"    />
+        <result property="ocrDate"    column="ocr_date"    />
+        <result property="ocrActualCount"    column="ocr_actual_count"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectBizTrainOcrLogVo">
+        select log_id, batch_id, file_md5, file_url, ocr_subject, ocr_date, ocr_actual_count, status, del_flag, create_by, create_time, update_by, update_time, remark from biz_train_ocr_log
+    </sql>
+
+    <select id="selectBizTrainOcrLogList" parameterType="BizTrainOcrLog" resultMap="BizTrainOcrLogResult">
+        <include refid="selectBizTrainOcrLogVo"/>
+        <where>  
+            <if test="batchId != null "> and batch_id = #{batchId}</if>
+            <if test="fileMd5 != null  and fileMd5 != ''"> and file_md5 = #{fileMd5}</if>
+            <if test="fileUrl != null  and fileUrl != ''"> and file_url = #{fileUrl}</if>
+            <if test="ocrSubject != null  and ocrSubject != ''"> and ocr_subject = #{ocrSubject}</if>
+            <if test="ocrDate != null  and ocrDate != ''"> and ocr_date = #{ocrDate}</if>
+            <if test="ocrActualCount != null "> and ocr_actual_count = #{ocrActualCount}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectBizTrainOcrLogByLogId" parameterType="Long" resultMap="BizTrainOcrLogResult">
+        <include refid="selectBizTrainOcrLogVo"/>
+        where log_id = #{logId}
+    </select>
+
+    <insert id="insertBizTrainOcrLog" parameterType="BizTrainOcrLog" useGeneratedKeys="true" keyProperty="logId">
+        insert into biz_train_ocr_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="batchId != null">batch_id,</if>
+            <if test="fileMd5 != null">file_md5,</if>
+            <if test="fileUrl != null">file_url,</if>
+            <if test="ocrSubject != null">ocr_subject,</if>
+            <if test="ocrDate != null">ocr_date,</if>
+            <if test="ocrActualCount != null">ocr_actual_count,</if>
+            <if test="status != null">status,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="batchId != null">#{batchId},</if>
+            <if test="fileMd5 != null">#{fileMd5},</if>
+            <if test="fileUrl != null">#{fileUrl},</if>
+            <if test="ocrSubject != null">#{ocrSubject},</if>
+            <if test="ocrDate != null">#{ocrDate},</if>
+            <if test="ocrActualCount != null">#{ocrActualCount},</if>
+            <if test="status != null">#{status},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBizTrainOcrLog" parameterType="BizTrainOcrLog">
+        update biz_train_ocr_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="batchId != null">batch_id = #{batchId},</if>
+            <if test="fileMd5 != null and fileMd5 != ''">file_md5 = #{fileMd5},</if>
+            <if test="fileUrl != null">file_url = #{fileUrl},</if>
+            <if test="ocrSubject != null">ocr_subject = #{ocrSubject},</if>
+            <if test="ocrDate != null">ocr_date = #{ocrDate},</if>
+            <if test="ocrActualCount != null">ocr_actual_count = #{ocrActualCount},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where log_id = #{logId}
+    </update>
+
+    <delete id="deleteBizTrainOcrLogByLogId" parameterType="Long">
+        delete from biz_train_ocr_log where log_id = #{logId}
+    </delete>
+
+    <delete id="deleteBizTrainOcrLogByLogIds" parameterType="String">
+        delete from biz_train_ocr_log where log_id in 
+        <foreach item="logId" collection="array" open="(" separator="," close=")">
+            #{logId}
+        </foreach>
+    </delete>
+</mapper>

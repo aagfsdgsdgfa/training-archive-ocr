@@ -1,0 +1,164 @@
+{
+  "pages": [{
+    "path": "pages/login",
+    "style": {
+      "navigationStyle": "custom"
+    }
+  }, {
+    "path": "pages/register",
+    "style": {
+      "navigationStyle": "custom"
+    }
+  }, {
+    "path": "pages/index",
+    "style": {
+      "navigationStyle": "custom"
+    }
+  }, {
+    "path": "pages/work/index",
+    "style": {
+      "navigationStyle": "custom"
+    }
+  }, {
+    "path": "pages/biz/ocr/camera",
+    "style": {
+      "navigationStyle": "custom"
+    }
+  },{
+    "path": "pages/biz/plan",
+    "style": {
+      "navigationStyle": "custom"
+    }
+  },{
+    "path": "pages/biz/ledger",
+    "style": {
+      "navigationStyle": "custom"
+    }
+  },{
+    "path": "pages/mine/index",
+    "style": {
+      "navigationStyle": "custom"
+    }
+  }, {
+    "path": "pages/mine/avatar/index",
+    "style": {
+      "navigationStyle": "custom"
+    }
+  },{
+    "path": "pages/biz/archive",
+    "style": {
+      "navigationStyle": "custom"
+    }
+  } ,{
+    "path": "pages/mine/info/index",
+    "style": {
+      "navigationStyle": "custom"
+    }
+  }, {
+    "path": "pages/mine/info/edit",
+    "style": {
+      "navigationStyle": "custom"
+    }
+  }, {
+    "path": "pages/mine/pwd/index",
+    "style": {
+      "navigationStyle": "custom"
+    }
+  }, {
+    "path": "pages/mine/setting/index",
+    "style": {
+     "navigationStyle": "custom"
+    }
+  }, {
+    "path": "pages/mine/help/index",
+    "style": {
+      "navigationStyle": "custom"
+    }
+  }, {
+    "path": "pages/mine/about/index",
+    "style": {
+     "navigationStyle": "custom"
+    }
+  }, {
+    "path": "pages/common/webview/index",
+    "style": {
+     "navigationStyle": "custom"
+    }
+  }, {
+    "path": "pages/biz/ledger/detail",
+    "style": {
+     "navigationStyle": "custom"
+    }
+  },
+  
+  {
+    "path": "pages/common/notice/index",
+    "style": {
+     "navigationStyle": "custom"
+    }
+  },
+  
+  {
+    "path": "pages/common/notice/detail",
+    "style": {
+     "navigationStyle": "custom"
+    }
+  },
+  
+  
+  {
+    "path": "pages/biz/plan/detail",
+    "style": {
+     "navigationStyle": "custom"
+    }
+  },
+  {
+    "path": "pages/biz/archive/detail",
+    "style": {
+     "navigationStyle": "custom"
+    }
+  },{
+    "path": "pages/biz/ocr/detail",
+    "style": {
+     "navigationStyle": "custom"
+    }
+  },{
+    "path": "pages/common/textview/index",
+    "style": {
+     "navigationStyle": "custom"
+    }
+  }],
+  "tabBar": {
+    "color": "#909399",
+    "selectedColor": "#1890ff",
+    "borderStyle": "white",
+    "backgroundColor": "#ffffff",
+    "list": [{
+        "pagePath": "pages/index",
+        "iconPath": "static/images/tabbar/home.png",
+        "selectedIconPath": "static/images/tabbar/home_.png",
+        "text": "首页"
+      }, {
+        "pagePath": "pages/work/index",
+        "iconPath": "static/images/tabbar/work.png",
+        "selectedIconPath": "static/images/tabbar/work_.png",
+        "text": "工作台"
+      }, {
+        "pagePath": "pages/biz/archive",
+        "iconPath": "/static/images/tabbar/archive.png",
+        "selectedIconPath": "/static/images/tabbar/archive_.png",
+        "text": "档案"
+      },{
+        "pagePath": "pages/mine/index",
+        "iconPath": "static/images/tabbar/mine.png",
+        "selectedIconPath": "static/images/tabbar/mine_.png",
+        "text": "我的"
+      }
+    ]
+  },
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "TrainArchive",
+    "navigationBarBackgroundColor": "#FFFFFF"
+  }
+}

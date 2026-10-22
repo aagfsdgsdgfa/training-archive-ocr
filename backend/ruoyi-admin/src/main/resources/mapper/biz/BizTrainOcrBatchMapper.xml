@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.biz.mapper.BizTrainOcrBatchMapper">
+    <resultMap type="BizTrainOcrBatch" id="BizTrainOcrBatchResult">
+        <result property="batchId" column="batch_id" />
+        <result property="planId" column="plan_id" />
+        <result property="batchNo" column="batch_no" />
+        <result property="totalPages" column="total_pages" />
+        <result property="ocrSubject" column="ocr_subject" />
+        <result property="ocrDate" column="ocr_date" />
+        <result property="ocrHostDept" column="ocr_host_dept" />
+        <result property="ocrSpeaker" column="ocr_speaker" />
+        <result property="ocrLocation" column="ocr_location" />
+        <result property="ocrTrainHours" column="ocr_train_hours" />
+        <result property="ocrTrainContent" column="ocr_train_content" />
+        <result property="ocrTargetCount" column="ocr_target_count" />
+        <result property="ocrActualCount" column="ocr_actual_count" />
+        <result property="status" column="status" />
+        <result property="createBy" column="create_by" />
+        <result property="createTime" column="create_time" />
+        <result property="updateTime" column="update_time" />
+        <result property="remark" column="remark" />
+    </resultMap>
+
+    <sql id="selectBizTrainOcrBatchVo">
+        select batch_id, plan_id, batch_no, total_pages, ocr_subject, ocr_date, ocr_host_dept, ocr_speaker, ocr_location, ocr_train_hours, ocr_train_content, ocr_target_count, ocr_actual_count, status, create_by, create_time, update_time, remark from biz_train_ocr_batch
+    </sql>
+
+    <select id="selectBizTrainOcrBatchList" parameterType="BizTrainOcrBatch" resultMap="BizTrainOcrBatchResult">
+        <include refid="selectBizTrainOcrBatchVo"/>
+        <where>
+            <if test="batchNo != null and batchNo != ''"> and batch_no = #{batchNo}</if>
+            <if test="planId != null "> and plan_id = #{planId}</if>
+            <if test="ocrSubject != null and ocrSubject != ''"> and ocr_subject like concat('%', #{ocrSubject}, '%')</if>
+            <if test="status != null and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+
+    <!-- 查询当天未结算的同 planId 批次（用于高拍仪分次上传自动追加） -->
+    <select id="selectOpenBatchByKey" parameterType="BizTrainOcrBatch" resultMap="BizTrainOcrBatchResult">
+        <include refid="selectBizTrainOcrBatchVo"/>
+        <where>
+            <if test="planId != null"> and plan_id = #{planId}</if>
+            and status in ('0', '1')
+            and date(create_time) = curdate()
+        </where>
+        order by create_time desc
+    </select>
+
+    <select id="selectBizTrainOcrBatchByBatchId" parameterType="Long" resultMap="BizTrainOcrBatchResult">
+        <include refid="selectBizTrainOcrBatchVo"/>
+        where batch_id = #{batchId}
+    </select>
+
+    <insert id="insertBizTrainOcrBatch" parameterType="BizTrainOcrBatch" useGeneratedKeys="true" keyProperty="batchId">
+        insert into biz_train_ocr_batch
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="planId != null">plan_id,</if>
+            <if test="batchNo != null">batch_no,</if>
+            <if test="totalPages != null">total_pages,</if>
+            <if test="ocrSubject != null">ocr_subject,</if>
+            <if test="ocrDate != null">ocr_date,</if>
+            <if test="ocrHostDept != null">ocr_host_dept,</if>
+            <if test="ocrSpeaker != null">ocr_speaker,</if>
+            <if test="ocrLocation != null">ocr_location,</if>
+            <if test="ocrTrainHours != null">ocr_train_hours,</if>
+            <if test="ocrTrainContent != null">ocr_train_content,</if>
+            <if test="ocrTargetCount != null">ocr_target_count,</if>
+            <if test="ocrActualCount != null">ocr_actual_count,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="planId != null">#{planId},</if>
+            <if test="batchNo != null">#{batchNo},</if>
+            <if test="totalPages != null">#{totalPages},</if>
+            <if test="ocrSubject != null">#{ocrSubject},</if>
+            <if test="ocrDate != null">#{ocrDate},</if>
+            <if test="ocrHostDept != null">#{ocrHostDept},</if>
+            <if test="ocrSpeaker != null">#{ocrSpeaker},</if>
+            <if test="ocrLocation != null">#{ocrLocation},</if>
+            <if test="ocrTrainHours != null">#{ocrTrainHours},</if>
+            <if test="ocrTrainContent != null">#{ocrTrainContent},</if>
+            <if test="ocrTargetCount != null">#{ocrTargetCount},</if>
+            <if test="ocrActualCount != null">#{ocrActualCount},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBizTrainOcrBatch" parameterType="BizTrainOcrBatch">
+        update biz_train_ocr_batch
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="planId != null">plan_id = #{planId},</if>
+            <if test="batchNo != null">batch_no = #{batchNo},</if>
+            <if test="totalPages != null">total_pages = #{totalPages},</if>
+            <if test="ocrSubject != null">ocr_subject = #{ocrSubject},</if>
+            <if test="ocrDate != null">ocr_date = #{ocrDate},</if>
+            <if test="ocrHostDept != null">ocr_host_dept = #{ocrHostDept},</if>
+            <if test="ocrSpeaker != null">ocr_speaker = #{ocrSpeaker},</if>
+            <if test="ocrLocation != null">ocr_location = #{ocrLocation},</if>
+            <if test="ocrTrainHours != null">ocr_train_hours = #{ocrTrainHours},</if>
+            <if test="ocrTrainContent != null">ocr_train_content = #{ocrTrainContent},</if>
+            <if test="ocrTargetCount != null">ocr_target_count = #{ocrTargetCount},</if>
+            <if test="ocrActualCount != null">ocr_actual_count = #{ocrActualCount},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where batch_id = #{batchId}
+    </update>
+
+    <delete id="deleteBizTrainOcrBatchByBatchId" parameterType="Long">
+        delete from biz_train_ocr_batch where batch_id = #{batchId}
+    </delete>
+
+    <delete id="deleteBizTrainOcrBatchByBatchIds" parameterType="String">
+        delete from biz_train_ocr_batch where batch_id in
+        <foreach item="batchId" collection="array" open="(" separator="," close=")">
+            #{batchId}
+        </foreach>
+    </delete>
+</mapper>

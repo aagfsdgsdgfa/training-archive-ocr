@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.biz.mapper.BizTrainLedgerMapper">
+
+    <resultMap type="BizTrainLedger" id="BizTrainLedgerResult">
+        <result property="ledgerId"    column="ledger_id"    />
+        <result property="serialNo"    column="serial_no"    />
+        <result property="serialDate"    column="serial_date"    />
+        <result property="planId"    column="plan_id"    />
+        <result property="sessionId"    column="session_id"    />
+        <result property="hostDeptName"    column="host_dept_name"    />
+        <result property="projectCategory"    column="project_category"    />
+        <result property="subject"    column="subject"    />
+        <result property="trainDate"    column="train_date"    />
+        <result property="trainHours"    column="train_hours"    />
+        <result property="speaker"    column="speaker"    />
+        <result property="locationName"    column="location_name"    />
+        <result property="attendeeNames"    column="attendee_names"    />
+        <result property="targetCount"    column="target_count"    />
+        <result property="actualCount"    column="actual_count"    />
+        <result property="planType"    column="plan_type"    />
+        <result property="trainLevel"    column="train_level"    />
+        <result property="attachmentUrl"    column="attachment_url"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectBizTrainLedgerVo">
+        select ledger_id, serial_no, serial_date, plan_id, session_id, host_dept_name, project_category, subject, train_date, train_hours, speaker, location_name, attendee_names, target_count, actual_count, plan_type, train_level, attachment_url, del_flag, create_by, create_time, update_by, update_time, remark from biz_train_ledger
+    </sql>
+
+    <select id="selectBizTrainLedgerList" parameterType="BizTrainLedger" resultMap="BizTrainLedgerResult">
+        <include refid="selectBizTrainLedgerVo"/>
+        <where>
+            <if test="planId != null "> and plan_id = #{planId}</if>
+            <if test="sessionId != null "> and session_id = #{sessionId}</if>
+            <if test="hostDeptName != null  and hostDeptName != ''"> and host_dept_name like concat('%', #{hostDeptName}, '%')</if>
+            <if test="projectCategory != null  and projectCategory != ''"> and project_category = #{projectCategory}</if>
+
+            <if test="subject != null  and subject != ''"> and subject like concat('%', #{subject}, '%')</if>
+
+            <if test="trainDate != null and trainDate != ''"> and train_date = #{trainDate}</if>
+            <if test="beginTrainDate != null and beginTrainDate != ''"> and train_date &gt;= #{beginTrainDate}</if>
+            <if test="endTrainDate != null and endTrainDate != ''"> and train_date &lt;= #{endTrainDate}</if>
+            <if test="trainHours != null  and trainHours != ''"> and train_hours = #{trainHours}</if>
+
+            <if test="speaker != null  and speaker != ''"> and speaker like concat('%', #{speaker}, '%')</if>
+
+            <if test="locationName != null  and locationName != ''"> and location_name like concat('%', #{locationName}, '%')</if>
+
+            <if test="attendeeNames != null  and attendeeNames != ''"> and attendee_names like concat('%', #{attendeeNames}, '%')</if>
+
+            <if test="targetCount != null "> and target_count = #{targetCount}</if>
+            <if test="actualCount != null "> and actual_count = #{actualCount}</if>
+            <if test="planType != null  and planType != ''"> and plan_type = #{planType}</if>
+            <if test="trainLevel != null  and trainLevel != ''"> and train_level = #{trainLevel}</if>
+            <if test="attachmentUrl != null  and attachmentUrl != ''"> and attachment_url = #{attachmentUrl}</if>
+        </where>
+        order by serial_date desc, serial_no desc
+    </select>
+
+    <select id="selectBizTrainLedgerByLedgerId" parameterType="Long" resultMap="BizTrainLedgerResult">
+        <include refid="selectBizTrainLedgerVo"/>
+        where ledger_id = #{ledgerId}
+    </select>
+
+    <insert id="insertBizTrainLedger" parameterType="BizTrainLedger" useGeneratedKeys="true" keyProperty="ledgerId">
+        insert into biz_train_ledger
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="serialNo != null and serialNo != ''">serial_no,</if>
+            <if test="serialDate != null">serial_date,</if>
+            <if test="planId != null">plan_id,</if>
+            <if test="sessionId != null">session_id,</if>
+            <if test="hostDeptName != null">host_dept_name,</if>
+            <if test="projectCategory != null">project_category,</if>
+            <if test="subject != null and subject != ''">subject,</if>
+            <if test="trainDate != null">train_date,</if>
+            <if test="trainHours != null">train_hours,</if>
+            <if test="speaker != null">speaker,</if>
+            <if test="locationName != null">location_name,</if>
+            <if test="attendeeNames != null">attendee_names,</if>
+            <if test="targetCount != null">target_count,</if>
+            <if test="actualCount != null">actual_count,</if>
+            <if test="planType != null">plan_type,</if>
+            <if test="trainLevel != null">train_level,</if>
+            <if test="attachmentUrl != null">attachment_url,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="serialNo != null and serialNo != ''">#{serialNo},</if>
+            <if test="serialDate != null">#{serialDate},</if>
+            <if test="planId != null">#{planId},</if>
+            <if test="sessionId != null">#{sessionId},</if>
+            <if test="hostDeptName != null">#{hostDeptName},</if>
+            <if test="projectCategory != null">#{projectCategory},</if>
+            <if test="subject != null and subject != ''">#{subject},</if>
+            <if test="trainDate != null">#{trainDate},</if>
+            <if test="trainHours != null">#{trainHours},</if>
+            <if test="speaker != null">#{speaker},</if>
+            <if test="locationName != null">#{locationName},</if>
+            <if test="attendeeNames != null">#{attendeeNames},</if>
+            <if test="targetCount != null">#{targetCount},</if>
+            <if test="actualCount != null">#{actualCount},</if>
+            <if test="planType != null">#{planType},</if>
+            <if test="trainLevel != null">#{trainLevel},</if>
+            <if test="attachmentUrl != null">#{attachmentUrl},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBizTrainLedger" parameterType="BizTrainLedger">
+        update biz_train_ledger
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="serialNo != null and serialNo != ''">serial_no = #{serialNo},</if>
+            <if test="serialDate != null">serial_date = #{serialDate},</if>
+            <if test="planId != null">plan_id = #{planId},</if>
+            <if test="sessionId != null">session_id = #{sessionId},</if>
+            <if test="hostDeptName != null">host_dept_name = #{hostDeptName},</if>
+            <if test="projectCategory != null">project_category = #{projectCategory},</if>
+            <if test="subject != null and subject != ''">subject = #{subject},</if>
+            <if test="trainDate != null">train_date = #{trainDate},</if>
+            <if test="trainHours != null">train_hours = #{trainHours},</if>
+            <if test="speaker != null">speaker = #{speaker},</if>
+            <if test="locationName != null">location_name = #{locationName},</if>
+            <if test="attendeeNames != null">attendee_names = #{attendeeNames},</if>
+            <if test="targetCount != null">target_count = #{targetCount},</if>
+            <if test="actualCount != null">actual_count = #{actualCount},</if>
+            <if test="planType != null">plan_type = #{planType},</if>
+            <if test="trainLevel != null">train_level = #{trainLevel},</if>
+            <if test="attachmentUrl != null">attachment_url = #{attachmentUrl},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where ledger_id = #{ledgerId}
+    </update>
+
+    <delete id="deleteBizTrainLedgerByLedgerId" parameterType="Long">
+        delete from biz_train_ledger where ledger_id = #{ledgerId}
+    </delete>
+
+    <delete id="deleteBizTrainLedgerByLedgerIds" parameterType="String">
+        delete from biz_train_ledger where ledger_id in
+        <foreach item="ledgerId" collection="array" open="(" separator="," close=")">
+            #{ledgerId}
+        </foreach>
+    </delete>
+
+    <!-- 台账明细：关联档案表获取参加人员user_id列表（用于历史快照查询） -->
+    <select id="selectLedgerWithArchiveUsers" resultMap="BizTrainLedgerResult">
+        SELECT l.*,
+               GROUP_CONCAT(DISTINCT a.user_id) as attendee_user_ids
+        FROM biz_train_ledger l
+        LEFT JOIN biz_train_archive a ON l.ledger_id = a.ledger_id
+        WHERE l.ledger_id = #{ledgerId}
+        GROUP BY l.ledger_id
+    </select>
+
+</mapper>

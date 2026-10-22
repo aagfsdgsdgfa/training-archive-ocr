@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.biz.mapper.BizTrainCourseMapper">
+
+    <resultMap type="BizTrainCourse" id="BizTrainCourseResult">
+        <result property="courseId"    column="course_id"    />
+        <result property="courseName"    column="course_name"    />
+        <result property="projectCategory"    column="project_category"    />
+        <result property="defaultHours"    column="default_hours"    />
+        <result property="courseSyllabus"    column="course_syllabus"    />
+        <result property="coursewareUrl"    column="courseware_url"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectBizTrainCourseVo">
+        select course_id, course_name, project_category, default_hours, course_syllabus, courseware_url, status, del_flag, create_by, create_time, update_by, update_time, remark from biz_train_course
+    </sql>
+
+    <select id="selectBizTrainCourseList" parameterType="BizTrainCourse" resultMap="BizTrainCourseResult">
+        <include refid="selectBizTrainCourseVo"/>
+        <where>
+            <if test="courseName != null  and courseName != ''"> and course_name like concat('%', #{courseName}, '%')</if>
+            <if test="projectCategory != null  and projectCategory != ''"> and project_category = #{projectCategory}</if>
+            <if test="defaultHours != null "> and default_hours = #{defaultHours}</if>
+
+            <if test="courseSyllabus != null  and courseSyllabus != ''"> and course_syllabus like concat('%', #{courseSyllabus}, '%')</if>
+
+            <if test="coursewareUrl != null  and coursewareUrl != ''"> and courseware_url = #{coursewareUrl}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+
+    <select id="selectBizTrainCourseByCourseId" parameterType="Long" resultMap="BizTrainCourseResult">
+        <include refid="selectBizTrainCourseVo"/>
+        where course_id = #{courseId}
+    </select>
+
+    <insert id="insertBizTrainCourse" parameterType="BizTrainCourse" useGeneratedKeys="true" keyProperty="courseId">
+        insert into biz_train_course
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="courseName != null and courseName != ''">course_name,</if>
+            <if test="projectCategory != null">project_category,</if>
+            <if test="defaultHours != null">default_hours,</if>
+            <if test="courseSyllabus != null">course_syllabus,</if>
+            <if test="coursewareUrl != null">courseware_url,</if>
+            <if test="status != null">status,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="courseName != null and courseName != ''">#{courseName},</if>
+            <if test="projectCategory != null">#{projectCategory},</if>
+            <if test="defaultHours != null">#{defaultHours},</if>
+            <if test="courseSyllabus != null">#{courseSyllabus},</if>
+            <if test="coursewareUrl != null">#{coursewareUrl},</if>
+            <if test="status != null">#{status},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBizTrainCourse" parameterType="BizTrainCourse">
+        update biz_train_course
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="courseName != null and courseName != ''">course_name = #{courseName},</if>
+            <if test="projectCategory != null">project_category = #{projectCategory},</if>
+            <if test="defaultHours != null">default_hours = #{defaultHours},</if>
+            <if test="courseSyllabus != null">course_syllabus = #{courseSyllabus},</if>
+            <if test="coursewareUrl != null">courseware_url = #{coursewareUrl},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where course_id = #{courseId}
+    </update>
+
+    <delete id="deleteBizTrainCourseByCourseId" parameterType="Long">
+        delete from biz_train_course where course_id = #{courseId}
+    </delete>
+
+    <delete id="deleteBizTrainCourseByCourseIds" parameterType="String">
+        delete from biz_train_course where course_id in
+        <foreach item="courseId" collection="array" open="(" separator="," close=")">
+            #{courseId}
+        </foreach>
+    </delete>
+</mapper>

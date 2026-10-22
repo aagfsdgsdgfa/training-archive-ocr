@@ -1,0 +1,36 @@
+# Java
+target/
+*.class
+*.jar
+*.war
+logs/
+*.log
+
+# Node
+node_modules/
+dist/
+*.local
+npm-debug.log*
+
+# uni-app
+unpackage/
+
+# 运行时数据
+uploadPath/
+upload/
+*.rdb
+
+# IDE / 系统
+.idea/
+.vscode/
+*.iml
+.claude/
+.codegraph/
+.DS_Store
+Thumbs.db
+
+# 本地敏感配置
+.env
+.env.local
+!.env.example
+cookies.txt

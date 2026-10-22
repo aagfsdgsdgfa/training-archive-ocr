@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysUserHistoryMapper">
+
+    <resultMap type="SysUserHistory" id="SysUserHistoryResult">
+        <id     property="historyId"  column="history_id"  />
+        <result property="userId"     column="user_id"     />
+        <result property="userName"   column="user_name"   />
+        <result property="deptId"     column="dept_id"     />
+        <result property="deptName"   column="dept_name"   />
+        <result property="postId"     column="post_id"     />
+        <result property="postName"  column="post_name"   />
+        <result property="startDate"  column="start_date"  />
+        <result property="endDate"    column="end_date"    />
+        <result property="createTime" column="create_time" />
+    </resultMap>
+
+    <sql id="selectUserHistoryVo">
+        SELECT history_id, user_id, user_name, dept_id, dept_name, post_id, post_name, start_date, end_date, create_time
+        FROM sys_user_history
+    </sql>
+
+    <select id="selectSysUserHistoryById" parameterType="Long" resultMap="SysUserHistoryResult">
+        <include refid="selectUserHistoryVo"/>
+        WHERE history_id = #{historyId}
+    </select>
+
+    <select id="selectSysUserHistoryList" parameterType="SysUserHistory" resultMap="SysUserHistoryResult">
+        <include refid="selectUserHistoryVo"/>
+        <where>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+            <if test="userName != null and userName != ''">
+                AND user_name = #{userName}
+            </if>
+            <if test="deptId != null">
+                AND dept_id = #{deptId}
+            </if>
+        </where>
+        ORDER BY user_id, start_date DESC
+    </select>
+
+    <insert id="insertSysUserHistory" parameterType="SysUserHistory" useGeneratedKeys="true" keyProperty="historyId">
+        INSERT INTO sys_user_history (
+            user_id, user_name, dept_id, dept_name, post_id, post_name, start_date, end_date
+        ) VALUES (
+            #{userId}, #{userName}, #{deptId}, #{deptName}, #{postId}, #{postName}, #{startDate}, #{endDate}
+        )
+    </insert>
+
+    <update id="updateSysUserHistory" parameterType="SysUserHistory">
+        UPDATE sys_user_history
+        SET user_name = #{userName},
+            dept_id = #{deptId},
+            dept_name = #{deptName},
+            post_id = #{postId},
+            post_name = #{postName},
+            end_date = #{endDate}
+        WHERE history_id = #{historyId}
+    </update>
+
+    <delete id="deleteSysUserHistoryById" parameterType="Long">
+        DELETE FROM sys_user_history WHERE history_id = #{historyId}
+    </delete>
+
+    <delete id="deleteSysUserHistoryByIds" parameterType="Long">
+        DELETE FROM sys_user_history WHERE history_id IN
+        <foreach collection="array" item="historyId" open="(" separator="," close=")">
+            #{historyId}
+        </foreach>
+    </delete>
+
+    <update id="closeUserHistoryByUserId">
+        UPDATE sys_user_history
+        SET end_date = #{endDate}
+        WHERE user_id = #{userId}
+          AND end_date IS NULL
+    </update>
+
+    <select id="selectUserSnapshot" resultMap="SysUserHistoryResult">
+        SELECT history_id, user_id, user_name, dept_id, dept_name, post_id, post_name, start_date, end_date
+        FROM sys_user_history
+        WHERE user_id = #{userId}
+          AND start_date &lt;= #{targetDate}
+          AND (end_date IS NULL OR end_date > #{targetDate})
+        ORDER BY start_date DESC
+        LIMIT 1
+    </select>
+
+</mapper>

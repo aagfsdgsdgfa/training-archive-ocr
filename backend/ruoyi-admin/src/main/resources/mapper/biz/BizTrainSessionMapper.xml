@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.biz.mapper.BizTrainSessionMapper">
+
+    <resultMap type="BizTrainSession" id="BizTrainSessionResult">
+        <result property="sessionId"    column="session_id"    />
+        <result property="planId"    column="plan_id"    />
+        <result property="subject"    column="subject"    />
+        <result property="trainContent" column="train_content" />
+        <result property="hostDeptId"    column="host_dept_id"    />
+        <result property="hostDeptName"    column="host_dept_name"    />
+        <result property="speaker"    column="speaker"    />
+        <result property="trainHours"    column="train_hours"    />
+        <result property="locationName"    column="location_name"    />
+        <result property="trainDate"    column="train_date"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="signType"    column="sign_type"    />
+        <result property="attachmentUrl"    column="attachment_url"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="source"    column="source"    />
+        <result property="batchId"    column="batch_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectBizTrainSessionVo">
+        select session_id, plan_id, subject, train_content, host_dept_id, host_dept_name, speaker, train_hours, location_name, train_date, start_time, end_time, sign_type, attachment_url, status, del_flag, source, batch_id, create_by, create_time, update_by, update_time, remark from biz_train_session
+    </sql>
+
+    <select id="selectBizTrainSessionList" parameterType="BizTrainSession" resultMap="BizTrainSessionResult">
+        <include refid="selectBizTrainSessionVo"/>
+        <where>
+            and del_flag = '0'
+            <if test="planId != null "> and plan_id = #{planId}</if>
+            <if test="subject != null  and subject != ''"> and subject like concat('%', #{subject}, '%')</if>
+
+            <if test="trainContent != null  and trainContent != ''"> and train_content like concat('%', #{trainContent}, '%')</if>
+            <if test="hostDeptName != null  and hostDeptName != ''"> and host_dept_name like concat('%', #{hostDeptName}, '%')</if>
+            <if test="speaker != null  and speaker != ''"> and speaker like concat('%', #{speaker}, '%')</if>
+            <if test="locationName != null  and locationName != ''"> and location_name like concat('%', #{locationName}, '%')</if>
+
+            <if test="hostDeptId != null "> and host_dept_id = #{hostDeptId}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="trainDate != null "> and date_format(train_date,'%y%m%d') = date_format(#{trainDate},'%y%m%d')</if>
+        </where>
+    </select>
+
+    <select id="selectBizTrainSessionBySessionId" parameterType="Long" resultMap="BizTrainSessionResult">
+        <include refid="selectBizTrainSessionVo"/>
+        where session_id = #{sessionId}
+    </select>
+
+    <select id="checkLocationConflict" parameterType="BizTrainSession" resultType="int">
+        select count(1) from biz_train_session
+        where location_name = #{locationName}
+        and del_flag = '0'
+        <if test="sessionId != null">
+            and session_id != #{sessionId}
+        </if>
+        and start_time &lt; #{endTime}
+        and end_time &gt; #{startTime}
+    </select>
+
+    <insert id="insertBizTrainSession" parameterType="BizTrainSession" useGeneratedKeys="true" keyProperty="sessionId">
+        insert into biz_train_session
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="planId != null">plan_id,</if>
+            <if test="subject != null and subject != ''">subject,</if>
+            <if test="trainContent != null">train_content,</if>
+            <if test="hostDeptId != null">host_dept_id,</if>
+            <if test="hostDeptName != null">host_dept_name,</if>
+            <if test="speaker != null">speaker,</if>
+            <if test="trainHours != null">train_hours,</if>
+            <if test="locationName != null">location_name,</if>
+            <if test="trainDate != null">train_date,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="signType != null">sign_type,</if>
+            <if test="attachmentUrl != null">attachment_url,</if>
+            <if test="status != null">status,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="source != null">source,</if>
+            <if test="batchId != null">batch_id,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="planId != null">#{planId},</if>
+            <if test="subject != null and subject != ''">#{subject},</if>
+            <if test="trainContent != null">#{trainContent},</if>
+            <if test="hostDeptId != null">#{hostDeptId},</if>
+            <if test="hostDeptName != null">#{hostDeptName},</if>
+            <if test="speaker != null">#{speaker},</if>
+            <if test="trainHours != null">#{trainHours},</if>
+            <if test="locationName != null">#{locationName},</if>
+            <if test="trainDate != null">#{trainDate},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="signType != null">#{signType},</if>
+            <if test="attachmentUrl != null">#{attachmentUrl},</if>
+            <if test="status != null">#{status},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="source != null">#{source},</if>
+            <if test="batchId != null">#{batchId},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBizTrainSession" parameterType="BizTrainSession">
+        update biz_train_session
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="planId != null">plan_id = #{planId},</if>
+            <if test="subject != null and subject != ''">subject = #{subject},</if>
+            <if test="trainContent != null">train_content = #{trainContent},</if>
+            <if test="hostDeptId != null">host_dept_id = #{hostDeptId},</if>
+            <if test="hostDeptName != null">host_dept_name = #{hostDeptName},</if>
+            <if test="speaker != null">speaker = #{speaker},</if>
+            <if test="trainHours != null">train_hours = #{trainHours},</if>
+            <if test="locationName != null">location_name = #{locationName},</if>
+            <if test="trainDate != null">train_date = #{trainDate},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="signType != null">sign_type = #{signType},</if>
+            <if test="attachmentUrl != null">attachment_url = #{attachmentUrl},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="source != null">source = #{source},</if>
+            <if test="batchId != null">batch_id = #{batchId},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where session_id = #{sessionId}
+    </update>
+
+    <delete id="deleteBizTrainSessionBySessionId" parameterType="Long">
+        update biz_train_session set del_flag = '2' where session_id = #{sessionId}
+    </delete>
+
+    <delete id="deleteBizTrainSessionBySessionIds" parameterType="String">
+        update biz_train_session set del_flag = '2' where session_id in
+        <foreach item="sessionId" collection="array" open="(" separator="," close=")">
+            #{sessionId}
+        </foreach>
+    </delete>
+</mapper>

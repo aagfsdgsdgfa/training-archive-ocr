@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.biz.mapper.BizTrainArchiveMapper">
+
+    <resultMap type="BizTrainArchive" id="BizTrainArchiveResult">
+        <result property="archiveId"      column="archive_id"      />
+        <result property="userId"         column="user_id"         />
+        <result property="deptId"         column="dept_id"         />
+        <result property="userName"       column="user_name"       />
+        <result property="deptName"       column="dept_name"       />
+        <result property="planId"         column="plan_id"         />
+        <result property="ledgerId"       column="ledger_id"       />
+        <result property="trainDate"      column="train_date"      />
+        <result property="trainDept"      column="train_dept"      />
+        <result property="trainLocation"  column="train_location"  />
+        <result property="subject"        column="subject"         />
+        <result property="trainContent"   column="train_content"   />
+        <result property="projectCategory" column="project_category" />
+        <result property="signSeq"        column="sign_seq"        />
+        <result property="speaker"        column="speaker"         />
+        <result property="score"          column="score"           />
+        <result property="trainHours"     column="train_hours"     />
+        <result property="jobChange"      column="job_change"      />
+        <result property="delFlag"        column="del_flag"        />
+        <result property="createBy"       column="create_by"       />
+        <result property="createTime"     column="create_time"     />
+        <result property="updateBy"       column="update_by"       />
+        <result property="updateTime"     column="update_time"     />
+        <result property="remark"         column="remark"          />
+    </resultMap>
+
+    <sql id="selectBizTrainArchiveVo">
+        select archive_id, user_id, dept_id, user_name, dept_name, plan_id, ledger_id, train_date, train_dept, train_location, subject, train_content, project_category, sign_seq, speaker, score, train_hours, job_change, del_flag, create_by, create_time, update_by, update_time, remark from biz_train_archive
+    </sql>
+
+    <select id="selectBizTrainArchiveList" parameterType="BizTrainArchive" resultMap="BizTrainArchiveResult">
+        <include refid="selectBizTrainArchiveVo"/>
+        <where>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="deptName != null  and deptName != ''"> and dept_name like concat('%', #{deptName}, '%')</if>
+            <if test="planId != null "> and plan_id = #{planId}</if>
+            <if test="ledgerId != null "> and ledger_id = #{ledgerId}</if>
+            <if test="trainDate != null  and trainDate != ''"> and train_date = #{trainDate}</if>
+            <if test="beginTrainDate != null and beginTrainDate != ''"> and train_date &gt;= #{beginTrainDate}</if>
+            <if test="endTrainDate != null and endTrainDate != ''"> and train_date &lt;= #{endTrainDate}</if>
+
+            <if test="trainDept != null  and trainDept != ''"> and train_dept like concat('%', #{trainDept}, '%')</if>
+            <if test="trainLocation != null  and trainLocation != ''"> and train_location like concat('%', #{trainLocation}, '%')</if>
+            <if test="subject != null  and subject != ''"> and subject like concat('%', #{subject}, '%')</if>
+
+            <if test="trainContent != null  and trainContent != ''"> and train_content like concat('%', #{trainContent}, '%')</if>
+            <if test="signSeq != null  and signSeq != ''"> and sign_seq = #{signSeq}</if>
+
+            <if test="speaker != null  and speaker != ''"> and speaker like concat('%', #{speaker}, '%')</if>
+
+            <if test="score != null  and score != ''"> and score = #{score}</if>
+            <if test="trainHours != null  and trainHours != ''"> and train_hours = #{trainHours}</if>
+            <if test="jobChange != null  and jobChange != ''"> and job_change = #{jobChange}</if>
+        </where>
+    </select>
+
+    <select id="selectBizTrainArchiveByArchiveId" parameterType="Long" resultMap="BizTrainArchiveResult">
+        <include refid="selectBizTrainArchiveVo"/>
+        where archive_id = #{archiveId}
+    </select>
+
+    <insert id="insertBizTrainArchive" parameterType="BizTrainArchive" useGeneratedKeys="true" keyProperty="archiveId">
+        insert into biz_train_archive
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="userName != null and userName != ''">user_name,</if>
+            <if test="deptName != null">dept_name,</if>
+            <if test="planId != null">plan_id,</if>
+            <if test="ledgerId != null">ledger_id,</if>
+            <if test="trainDate != null">train_date,</if>
+            <if test="trainDept != null">train_dept,</if>
+            <if test="trainLocation != null">train_location,</if>
+            <if test="subject != null and subject != ''">subject,</if>
+            <if test="trainContent != null and trainContent != ''">train_content,</if>
+            <if test="projectCategory != null and projectCategory != ''">project_category,</if>
+            <if test="signSeq != null">sign_seq,</if>
+            <if test="speaker != null">speaker,</if>
+            <if test="score != null">score,</if>
+            <if test="trainHours != null">train_hours,</if>
+            <if test="jobChange != null">job_change,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="userName != null and userName != ''">#{userName},</if>
+            <if test="deptName != null">#{deptName},</if>
+            <if test="planId != null">#{planId},</if>
+            <if test="ledgerId != null">#{ledgerId},</if>
+            <if test="trainDate != null">#{trainDate},</if>
+            <if test="trainDept != null">#{trainDept},</if>
+            <if test="trainLocation != null">#{trainLocation},</if>
+            <if test="subject != null and subject != ''">#{subject},</if>
+            <if test="trainContent != null and trainContent != ''">#{trainContent},</if>
+            <if test="projectCategory != null and projectCategory != ''">#{projectCategory},</if>
+            <if test="signSeq != null">#{signSeq},</if>
+            <if test="speaker != null">#{speaker},</if>
+            <if test="score != null">#{score},</if>
+            <if test="trainHours != null">#{trainHours},</if>
+            <if test="jobChange != null">#{jobChange},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBizTrainArchive" parameterType="BizTrainArchive">
+        update biz_train_archive
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="userName != null and userName != ''">user_name = #{userName},</if>
+            <if test="deptName != null">dept_name = #{deptName},</if>
+            <if test="planId != null">plan_id = #{planId},</if>
+            <if test="ledgerId != null">ledger_id = #{ledgerId},</if>
+            <if test="trainDate != null">train_date = #{trainDate},</if>
+            <if test="trainDept != null">train_dept = #{trainDept},</if>
+            <if test="trainLocation != null">train_location = #{trainLocation},</if>
+            <if test="subject != null and subject != ''">subject = #{subject},</if>
+            <if test="trainContent != null and trainContent != ''">train_content = #{trainContent},</if>
+            <if test="projectCategory != null and projectCategory != ''">project_category = #{projectCategory},</if>
+            <if test="signSeq != null">sign_seq = #{signSeq},</if>
+            <if test="speaker != null">speaker = #{speaker},</if>
+            <if test="score != null">score = #{score},</if>
+            <if test="trainHours != null">train_hours = #{trainHours},</if>
+            <if test="jobChange != null">job_change = #{jobChange},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where archive_id = #{archiveId}
+    </update>
+
+    <delete id="deleteBizTrainArchiveByArchiveId" parameterType="Long">
+        delete from biz_train_archive where archive_id = #{archiveId}
+    </delete>
+
+    <delete id="deleteBizTrainArchiveByArchiveIds" parameterType="String">
+        delete from biz_train_archive where archive_id in
+        <foreach item="archiveId" collection="array" open="(" separator="," close=")">
+            #{archiveId}
+        </foreach>
+    </delete>
+
+    <!-- 历史快照查询：关联sys_user_history获取培训发生时的人员信息 -->
+    <select id="selectArchiveListWithSnapshot" parameterType="BizTrainArchive" resultMap="BizTrainArchiveResult">
+        SELECT a.archive_id, a.user_id, a.dept_id,
+               COALESCE(h.user_name, a.user_name) as user_name,
+               COALESCE(h.dept_name, a.dept_name) as dept_name,
+               h.post_name,
+               a.plan_id, a.ledger_id, a.train_date, a.train_dept, a.train_location,
+               a.subject, a.train_content, a.project_category, a.sign_seq, a.speaker, a.score, a.train_hours,
+               a.job_change, a.del_flag, a.create_by, a.create_time, a.update_by, a.update_time, a.remark
+        FROM biz_train_archive a
+        LEFT JOIN sys_user_history h
+            ON a.user_id = h.user_id
+            AND h.start_date &lt;= a.train_date
+            AND (h.end_date IS NULL OR h.end_date &gt; a.train_date)
+        <where>
+            <if test="userId != null "> and a.user_id = #{userId}</if>
+            <if test="deptId != null "> and a.dept_id = #{deptId}</if>
+            <if test="userName != null and userName != ''"> and h.user_name like concat('%', #{userName}, '%')</if>
+            <if test="deptName != null and deptName != ''"> and h.dept_name like concat('%', #{deptName}, '%')</if>
+            <if test="planId != null "> and a.plan_id = #{planId}</if>
+            <if test="ledgerId != null "> and a.ledger_id = #{ledgerId}</if>
+            <if test="trainDate != null and trainDate != ''"> and a.train_date = #{trainDate}</if>
+            <if test="beginTrainDate != null and beginTrainDate != ''"> and a.train_date &gt;= #{beginTrainDate}</if>
+            <if test="endTrainDate != null and endTrainDate != ''"> and a.train_date &lt;= #{endTrainDate}</if>
+            <if test="trainDept != null and trainDept != ''"> and a.train_dept like concat('%', #{trainDept}, '%')</if>
+            <if test="trainLocation != null and trainLocation != ''"> and a.train_location like concat('%', #{trainLocation}, '%')</if>
+            <if test="subject != null and subject != ''"> and a.subject like concat('%', #{subject}, '%')</if>
+            <if test="trainContent != null and trainContent != ''"> and a.train_content like concat('%', #{trainContent}, '%')</if>
+            <if test="signSeq != null and signSeq != ''"> and a.sign_seq = #{signSeq}</if>
+            <if test="speaker != null and speaker != ''"> and a.speaker like concat('%', #{speaker}, '%')</if>
+            <if test="score != null and score != ''"> and a.score = #{score}</if>
+            <if test="trainHours != null and trainHours != ''"> and a.train_hours = #{trainHours}</if>
+            <if test="jobChange != null and jobChange != ''"> and a.job_change = #{jobChange}</if>
+        </where>
+        ORDER BY a.train_date DESC
+    </select>
+
+</mapper>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.biz.mapper.BizTrainAttendanceMapper">
+
+    <resultMap type="BizTrainAttendance" id="BizTrainAttendanceResult">
+        <result property="recordId"    column="record_id"    />
+        <result property="sessionId"    column="session_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="signSeq"    column="sign_seq"    />
+        <result property="score"    column="score"    />
+        <result property="signTime"    column="sign_time"    />
+        <result property="signStatus"    column="sign_status"    />
+        <result property="appealStatus"    column="appeal_status"    />
+        <result property="appealReason"    column="appeal_reason"    />
+        <result property="appealImage"    column="appeal_image"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="source"    column="source"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectBizTrainAttendanceVo">
+        select record_id, session_id, user_id, sign_seq, score, sign_time, sign_status, appeal_status, appeal_reason, appeal_image, del_flag, source, create_by, create_time, update_by, update_time, remark from biz_train_attendance
+    </sql>
+
+    <select id="selectBizTrainAttendanceList" parameterType="BizTrainAttendance" resultMap="BizTrainAttendanceResult">
+        <include refid="selectBizTrainAttendanceVo"/>
+        <where>
+            del_flag = '0'
+            <if test="sessionId != null "> and session_id = #{sessionId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="signSeq != null  and signSeq != ''"> and sign_seq = #{signSeq}</if>
+            <if test="score != null  and score != ''"> and score = #{score}</if>
+            <if test="scoreLevel == 'above'"> and CAST(score AS SIGNED) &gt;= 80</if>
+            <if test="scoreLevel == 'below'"> and CAST(score AS SIGNED) &gt;= 0 and CAST(score AS SIGNED) &lt; 80</if>
+            <if test="scoreLevel == 'empty'"> and (score IS NULL or score = '' or score = 'null' or score = '空白')</if>
+            <if test="signTime != null "> and DATE(sign_time) = #{signTime}</if>
+            <if test="signStatus != null  and signStatus != ''"> and sign_status = #{signStatus}</if>
+            <if test="appealStatus != null  and appealStatus != ''"> and appeal_status = #{appealStatus}</if>
+            <if test="source != null  and source != ''"> and source = #{source}</if>
+
+            <if test="appealReason != null  and appealReason != ''"> and appeal_reason like concat('%', #{appealReason}, '%')</if>
+
+            <if test="appealImage != null  and appealImage != ''"> and appeal_image = #{appealImage}</if>
+        </where>
+        order by record_id desc
+    </select>
+
+    <select id="selectBizTrainAttendanceByRecordId" parameterType="Long" resultMap="BizTrainAttendanceResult">
+        <include refid="selectBizTrainAttendanceVo"/>
+        where record_id = #{recordId}
+    </select>
+
+    <insert id="insertBizTrainAttendance" parameterType="BizTrainAttendance" useGeneratedKeys="true" keyProperty="recordId">
+        insert into biz_train_attendance
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sessionId != null">session_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="signSeq != null">sign_seq,</if>
+            <if test="score != null">score,</if>
+            <if test="signTime != null">sign_time,</if>
+            <if test="signStatus != null">sign_status,</if>
+            <if test="appealStatus != null">appeal_status,</if>
+            <if test="appealReason != null">appeal_reason,</if>
+            <if test="appealImage != null">appeal_image,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="source != null">source,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sessionId != null">#{sessionId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="signSeq != null">#{signSeq},</if>
+            <if test="score != null">#{score},</if>
+            <if test="signTime != null">#{signTime},</if>
+            <if test="signStatus != null">#{signStatus},</if>
+            <if test="appealStatus != null">#{appealStatus},</if>
+            <if test="appealReason != null">#{appealReason},</if>
+            <if test="appealImage != null">#{appealImage},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="source != null">#{source},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBizTrainAttendance" parameterType="BizTrainAttendance">
+        update biz_train_attendance
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sessionId != null">session_id = #{sessionId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="signSeq != null">sign_seq = #{signSeq},</if>
+            <if test="score != null">score = #{score},</if>
+            <if test="signTime != null">sign_time = #{signTime},</if>
+            <if test="signStatus != null">sign_status = #{signStatus},</if>
+            <if test="appealStatus != null">appeal_status = #{appealStatus},</if>
+            <if test="appealReason != null">appeal_reason = #{appealReason},</if>
+            <if test="appealImage != null">appeal_image = #{appealImage},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="source != null">source = #{source},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where record_id = #{recordId}
+    </update>
+
+    <delete id="deleteBizTrainAttendanceByRecordId" parameterType="Long">
+        delete from biz_train_attendance where record_id = #{recordId}
+    </delete>
+
+    <delete id="deleteBizTrainAttendanceByRecordIds" parameterType="String">
+        delete from biz_train_attendance where record_id in
+        <foreach item="recordId" collection="array" open="(" separator="," close=")">
+            #{recordId}
+        </foreach>
+    </delete>
+
+    <select id="selectBizTrainAttendanceBySessionId" parameterType="Long" resultMap="BizTrainAttendanceResult">
+        <include refid="selectBizTrainAttendanceVo"/>
+        where del_flag = '0' and session_id = #{sessionId}
+        order by record_id desc
+    </select>
+</mapper>

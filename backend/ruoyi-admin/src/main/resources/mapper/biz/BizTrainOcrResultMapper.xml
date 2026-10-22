@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.biz.mapper.BizTrainOcrResultMapper">
+
+    <resultMap type="BizTrainOcrResult" id="BizTrainOcrResultResult">
+        <result property="resultId"    column="result_id"    />
+        <result property="batchId"     column="batch_id"     />
+        <result property="logId"       column="log_id"       />
+        <result property="signSeq"     column="sign_seq"     />
+        <result property="parsedName"  column="parsed_name"  />
+        <result property="parsedDept"  column="parsed_dept"  />
+        <result property="parsedScore" column="parsed_score" />
+        <result property="parsedRemark" column="parsed_remark" />
+        <result property="isNewUser"   column="is_new_user"  />
+        <result property="status"      column="status"       />
+    </resultMap>
+
+    <sql id="selectBizTrainOcrResultVo">
+        select result_id, batch_id, log_id, sign_seq, parsed_name, parsed_dept, parsed_score, parsed_remark, is_new_user, status from biz_train_ocr_result
+    </sql>
+
+    <select id="selectBizTrainOcrResultList" parameterType="BizTrainOcrResult" resultMap="BizTrainOcrResultResult">
+        <include refid="selectBizTrainOcrResultVo"/>
+        <where>
+            <if test="batchId != null "> and batch_id = #{batchId}</if>
+            <if test="logId != null "> and log_id = #{logId}</if>
+            <if test="signSeq != null  and signSeq != ''"> and sign_seq = #{signSeq}</if>
+            <if test="parsedName != null  and parsedName != ''"> and parsed_name like concat('%', #{parsedName}, '%')</if>
+            <if test="parsedDept != null  and parsedDept != ''"> and parsed_dept = #{parsedDept}</if>
+            <if test="parsedScore != null  and parsedScore != ''"> and parsed_score = #{parsedScore}</if>
+            <if test="isNewUser != null  and isNewUser != ''"> and is_new_user = #{isNewUser}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+
+    <select id="selectBizTrainOcrResultByResultId" parameterType="Long" resultMap="BizTrainOcrResultResult">
+        <include refid="selectBizTrainOcrResultVo"/>
+        where result_id = #{resultId}
+    </select>
+
+    <insert id="insertBizTrainOcrResult" parameterType="BizTrainOcrResult" useGeneratedKeys="true" keyProperty="resultId">
+        insert into biz_train_ocr_result
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="batchId != null">batch_id,</if>
+            <if test="logId != null">log_id,</if>
+            <if test="signSeq != null and signSeq != ''">sign_seq,</if>
+            <if test="parsedName != null and parsedName != ''">parsed_name,</if>
+            <if test="parsedDept != null">parsed_dept,</if>
+            <if test="parsedScore != null">parsed_score,</if>
+            <if test="parsedRemark != null">parsed_remark,</if>
+            <if test="isNewUser != null">is_new_user,</if>
+            <if test="status != null">status,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="batchId != null">#{batchId},</if>
+            <if test="logId != null">#{logId},</if>
+            <if test="signSeq != null and signSeq != ''">#{signSeq},</if>
+            <if test="parsedName != null and parsedName != ''">#{parsedName},</if>
+            <if test="parsedDept != null">#{parsedDept},</if>
+            <if test="parsedScore != null">#{parsedScore},</if>
+            <if test="parsedRemark != null">#{parsedRemark},</if>
+            <if test="isNewUser != null">#{isNewUser},</if>
+            <if test="status != null">#{status},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBizTrainOcrResult" parameterType="BizTrainOcrResult">
+        update biz_train_ocr_result
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="batchId != null">batch_id = #{batchId},</if>
+            <if test="logId != null">log_id = #{logId},</if>
+            <if test="signSeq != null and signSeq != ''">sign_seq = #{signSeq},</if>
+            <if test="parsedName != null and parsedName != ''">parsed_name = #{parsedName},</if>
+            <if test="parsedDept != null">parsed_dept = #{parsedDept},</if>
+            <if test="parsedScore != null">parsed_score = #{parsedScore},</if>
+            <if test="parsedRemark != null">parsed_remark = #{parsedRemark},</if>
+            <if test="isNewUser != null">is_new_user = #{isNewUser},</if>
+            <if test="status != null">status = #{status},</if>
+        </trim>
+        where result_id = #{resultId}
+    </update>
+
+    <delete id="deleteBizTrainOcrResultByResultId" parameterType="Long">
+        delete from biz_train_ocr_result where result_id = #{resultId}
+    </delete>
+
+    <delete id="deleteBizTrainOcrResultByResultIds" parameterType="String">
+        delete from biz_train_ocr_result where result_id in
+        <foreach item="resultId" collection="array" open="(" separator="," close=")">
+            #{resultId}
+        </foreach>
+    </delete>
+
+    <!-- 按批次ID清空所有 OCR 暂存明细,用于 Excel 重传时的全量替换语义 -->
+    <delete id="deleteBizTrainOcrResultByBatchId" parameterType="Long">
+        delete from biz_train_ocr_result where batch_id = #{batchId}
+    </delete>
+</mapper>

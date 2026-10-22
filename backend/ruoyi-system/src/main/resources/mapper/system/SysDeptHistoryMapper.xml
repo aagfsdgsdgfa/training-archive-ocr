@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysDeptHistoryMapper">
+
+    <resultMap type="SysDeptHistory" id="SysDeptHistoryResult">
+        <id     property="historyId"  column="history_id"  />
+        <result property="deptId"     column="dept_id"     />
+        <result property="deptName"   column="dept_name"   />
+        <result property="startDate"  column="start_date"  />
+        <result property="endDate"    column="end_date"    />
+        <result property="createTime" column="create_time" />
+    </resultMap>
+
+    <sql id="selectDeptHistoryVo">
+        SELECT history_id, dept_id, dept_name, start_date, end_date, create_time
+        FROM sys_dept_history
+    </sql>
+
+    <select id="selectSysDeptHistoryById" parameterType="Long" resultMap="SysDeptHistoryResult">
+        <include refid="selectDeptHistoryVo"/>
+        WHERE history_id = #{historyId}
+    </select>
+
+    <select id="selectSysDeptHistoryList" parameterType="SysDeptHistory" resultMap="SysDeptHistoryResult">
+        <include refid="selectDeptHistoryVo"/>
+        <where>
+            <if test="deptId != null">
+                AND dept_id = #{deptId}
+            </if>
+            <if test="deptName != null and deptName != ''">
+                AND dept_name = #{deptName}
+            </if>
+        </where>
+        ORDER BY dept_id, start_date DESC
+    </select>
+
+    <insert id="insertSysDeptHistory" parameterType="SysDeptHistory" useGeneratedKeys="true" keyProperty="historyId">
+        INSERT INTO sys_dept_history (
+            dept_id, dept_name, start_date, end_date
+        ) VALUES (
+            #{deptId}, #{deptName}, #{startDate}, #{endDate}
+        )
+    </insert>
+
+    <update id="updateSysDeptHistory" parameterType="SysDeptHistory">
+        UPDATE sys_dept_history
+        SET dept_name = #{deptName},
+            end_date = #{endDate}
+        WHERE history_id = #{historyId}
+    </update>
+
+    <delete id="deleteSysDeptHistoryById" parameterType="Long">
+        DELETE FROM sys_dept_history WHERE history_id = #{historyId}
+    </delete>
+
+    <delete id="deleteSysDeptHistoryByIds" parameterType="Long">
+        DELETE FROM sys_dept_history WHERE history_id IN
+        <foreach collection="array" item="historyId" open="(" separator="," close=")">
+            #{historyId}
+        </foreach>
+    </delete>
+
+    <update id="closeDeptHistoryByDeptId">
+        UPDATE sys_dept_history
+        SET end_date = #{endDate}
+        WHERE dept_id = #{deptId}
+          AND end_date IS NULL
+    </update>
+
+    <select id="selectDeptSnapshot" resultMap="SysDeptHistoryResult">
+        SELECT history_id, dept_id, dept_name, start_date, end_date
+        FROM sys_dept_history
+        WHERE dept_id = #{deptId}
+          AND start_date &lt;= #{targetDate}
+          AND (end_date IS NULL OR end_date > #{targetDate})
+        ORDER BY start_date DESC
+        LIMIT 1
+    </select>
+
+</mapper>
